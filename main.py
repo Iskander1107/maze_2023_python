@@ -21,7 +21,7 @@ class Maze:
         for row in self.grid:
             self.map.append(['_' if col == 0 else '|' for col in row])
 
-    def __get_next_node__(self, x, y):
+    def __get_next_node(self, x, y):
         check_next_node = lambda x, y: True if 0 <= x < self.cols and 0 <= y < self.rows and not self.grid[y][
             x] else False
         ways = [-1, 0], [0, -1], [1, 0], [0, 1]
@@ -42,7 +42,7 @@ class Maze:
         for y, row in enumerate(self.grid):
             for x, col in enumerate(row):
                 if not col:
-                    graph[(x, y)] = graph.get((x, y), []) + self.__get_next_node__(x, y)
+                    graph[(x, y)] = graph.get((x, y), []) + self.__get_next_node(x, y)
 
         while queue:
             cur_node = queue.popleft()
