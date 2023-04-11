@@ -109,7 +109,7 @@ class Maze:
 
 # a = Maze(rows=2, cols=2)
 a = Maze()
-a.upload('maze3.txt')
+a.upload('maze4.txt')
 # a.crate_map(0.5)
 a.dfs()
 a.show_path()
