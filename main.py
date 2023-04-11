@@ -1,5 +1,6 @@
-from random import random
+from random import random, randint
 from collections import deque
+import heapq
 
 
 class Maze:
@@ -15,8 +16,8 @@ class Maze:
 
     def crate_map(self, per=0.2):
         self.grid = [[1 if random() < per else 0 for col in range(self.cols)] for row in range(self.rows)]
-        if self.grid[0][0] == 1:
-            self.grid[0][0] = 0
+        self.grid[0][0] = 0
+        self.grid[self.rows - 1][self.cols - 1] = 0
         self.map = []
         for row in self.grid:
             self.map.append(['_' if col == 0 else '|' for col in row])
@@ -48,7 +49,11 @@ class Maze:
             cur_node = queue.popleft()
             if cur_node == self.end:
                 break
-            next_nodes = graph[cur_node]
+            try:
+                next_nodes = graph[cur_node]
+            except KeyError:
+                print('НАЧАЛА ЗАВАЛЕНО ЧЕМ-ТО')
+                break
             for next_node in next_nodes:
                 if next_node not in self.visited:
                     queue.append(next_node)
@@ -60,7 +65,11 @@ class Maze:
         cur_node = self.end
         print(f'{cur_node} ', end='')
         while cur_node != self.start:
-            cur_node = self.visited[cur_node]
+            try:
+                cur_node = self.visited[cur_node]
+            except KeyError:
+                print('НЕТ ПУТИ')
+                return
             print(f'---> {cur_node} ', end='')
             solved_map[cur_node[1]][cur_node[0]] = '*'
         print()
@@ -75,11 +84,19 @@ class Maze:
 
     def upload(self, filename):
         self.grid = []
+        max_len = 0
         with open(filename, "r") as f:
             for line in f:
                 tmp = list(map(lambda x: int(x), line.strip().split()))
+                if len(tmp) > max_len:
+                    max_len = len(tmp)
                 self.grid.append(tmp)
-
+        for row in range(len(self.grid)):
+            if len(self.grid[row]) <= max_len:
+                self.grid[row] += [1 for i in range(max_len - len(self.grid[row]))]
+        print(self.grid)
+        self.cols = max_len
+        self.rows = len(self.grid)
         self.map = []
         for row in self.grid:
             self.map.append(['_' if col == 0 else '|' for col in row])
@@ -90,10 +107,11 @@ class Maze:
             print(*row)
 
 
+# a = Maze(rows=2, cols=2)
 a = Maze()
-a.crate_map(0.2)
-a.upload('maze.txt')
-a.dfs(end=(5, 6))
+a.upload('maze3.txt')
+# a.crate_map(0.5)
+a.dfs()
 a.show_path()
 a.show_maze()
 # a.save('maze2.txt')
