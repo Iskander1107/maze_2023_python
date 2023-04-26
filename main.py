@@ -30,7 +30,7 @@ def main():
     maze.show_maze()
     maze.show_path()
     try:
-        a.save(args[3])
+        maze.save(args[3])
     except:
         pass
 
