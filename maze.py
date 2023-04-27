@@ -27,7 +27,7 @@ class Maze:
             x] else False
         ways = [-1, 0], [0, -1], [1, 0], [0, 1]
         # print([(self.weights[y + dy][x + dx], (x + dx, y + dy)) for dx, dy in ways if check_next_node(x + dx, y + dy)])
-        return [(self.weights[y + dy][x + dx], (x + dx, y + dy)) for dx, dy in ways if check_next_node(x + dx, y + dy)]
+        return [(self.__generate_weights(), (x + dx, y + dy)) for dx, dy in ways if check_next_node(x + dx, y + dy)]
 
     def dfs(self, start=(0, 0), end=(0, 0)):
         if end == (0, 0):
@@ -61,7 +61,7 @@ class Maze:
                     self.visited[next_node] = cur_node
 
     def __generate_weights(self):
-        self.weights = [[randint(1, 10) for i in range(self.cols)] for j in range(self.rows)]
+        return randint(1, 10)
 
     def __clean_map(self):
         for row in range(self.rows):
@@ -100,7 +100,8 @@ class Maze:
                     heapq.heappush(queue, (new_cost, neigh_node))
                     cost[neigh_node] = new_cost
                     self.visited[neigh_node] = cur_node
-
+    def mst(self, start=(0, 0), end=(0, 0)):
+        pass
     def show_path(self):
         solved_map = self.map.copy()
         print('----SHOW PATH----')
