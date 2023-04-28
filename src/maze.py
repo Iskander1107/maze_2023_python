@@ -20,7 +20,6 @@ class Maze:
         self.map = []
         for row in self.grid:
             self.map.append(['_' if col == 0 else '|' for col in row])
-        self.__generate_weights()
 
     def __get_next_node(self, x, y):
         check_next_node = lambda x, y: True if 0 <= x < self.cols and 0 <= y < self.rows and not self.grid[y][
@@ -150,3 +149,6 @@ class Maze:
         print('----PRINT MAZE----')
         for row in self.map:
             print(*row)
+
+    def return_size(self):
+        return (self.cols, self.rows)
