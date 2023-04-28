@@ -99,8 +99,57 @@ class Maze:
                     heapq.heappush(queue, (new_cost, neigh_node))
                     cost[neigh_node] = new_cost
                     self.visited[neigh_node] = cur_node
+
     def mst(self, start=(0, 0), end=(0, 0)):
-        pass
+        if end == (0, 0):
+            self.end = (self.cols - 1, self.rows - 1)
+        else:
+            self.end = end
+        self.start = start
+
+        # инициализация
+        unvisited = set((x, y) for y in range(self.rows) for x in range(self.cols) if self.grid[y][x] == 0)
+        visited = set()
+        edges = []
+        total_weight = 0
+
+        # выбор первой вершины
+        cur_node = self.start
+        visited.add(cur_node)
+        unvisited.remove(cur_node)
+        # добавление рёбер, пока все вершины не будут пройдены
+        while unvisited:
+            # получение всех соседних вершин, которые ещё не посещены
+            neighbors = set()
+            for node in visited:
+                for neighbor in self.__get_next_node(node[0], node[1]):
+                    if neighbor[1] in unvisited:
+                        neighbors.add(neighbor[1])
+            # получение ребра с минимальным весом
+            min_weight, min_edge = float('inf'), None
+            for edge in [(self.__generate_weights(), (node, neighbor)) for node in visited for neighbor in neighbors]:
+                weight, _ = edge
+                if weight < min_weight:
+                    min_weight, min_edge = weight, edge
+            # добавление найденного ребра в MST
+            try:
+                weight, (n1, n2) = min_edge
+            except:
+                print("ЧТО-то не так")
+                return
+            total_weight += weight
+            edges.append(min_edge)
+            # добавление вершины в посещённые
+            visited.add(n2)
+            unvisited.remove(n2)
+            if self.end in visited:
+                break
+        print('----MST---')
+        mst_map = self.map.copy()
+        for node in visited:
+            mst_map[node[1]][node[0]] = '*'
+        for row in mst_map:
+            print(*row)
     def show_path(self):
         solved_map = self.map.copy()
         print('----SHOW PATH----')
