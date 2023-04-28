@@ -26,11 +26,11 @@ def main():
         print("----DIJKSTRA---")
         maze.dijkstra()
         maze.show_path()
+        #maze.save('../data/maze6.txt')
         #maze.mst()
         return
     maze.show_maze()
     maze.show_path()
-
     try:
         maze.save(args[3])
     except:
