@@ -4,38 +4,44 @@ import argparse
 
 
 def main():
-    args = sys.argv
-    maze = Maze()
+    parser = argparse.ArgumentParser(
+        prog='Maze',
+        description='Pogram create maze and solve it'
+        )
+    parser.add_argument('methods', type=str, help='Choose one method in [bfs, dijkstra, all, mst]')
+    parser.add_argument('--upload', type=str, help='Input dir for upload maze]')
+    parser.add_argument('--save', type=str, help='Input dir for save maze]')
+    args = parser.parse_args()
+    MAZE = Maze()
     methods = ['bfs', 'dijkstra', 'all', 'mst']
-    if len(args) < 2 or args[1] not in methods:
-        print('Вы не ввели метод решения или ввели некорректно')
-        return
-    try:
-        maze.upload(args[2])
-    except:
-        maze.crate_map()
+    print(type(args.methods))
 
-    if args[1] == 'bfs':
-        maze.dfs()
-    elif args[1] == 'dijkstra':
-        maze.dijkstra()
-    elif args[1] == 'mst':
-        maze.mst()
+    try:
+        MAZE.upload(args.upload)
+    except:
+        MAZE.crate_map()
+
+    if args.methods == 'bfs':
+        MAZE.dfs()
+    elif args.methods == 'dijkstra':
+        MAZE.dijkstra()
+    elif args.methods == 'mst':
+        MAZE.mst()
         return
     else:
-        maze.show_maze()
+        MAZE.show_maze()
         print("----DFS----")
-        maze.dfs()
-        maze.show_path()
+        MAZE.dfs()
+        MAZE.show_path()
         print("----DIJKSTRA---")
-        maze.dijkstra()
-        maze.show_path()
-        maze.mst()
+        MAZE.dijkstra()
+        MAZE.show_path()
+        MAZE.mst()
         return
-    maze.show_maze()
-    maze.show_path()
+    MAZE.show_maze()
+    MAZE.show_path()
     try:
-        maze.save(args[3])
+        MAZE.save(args.save)
     except:
         pass
 
