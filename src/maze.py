@@ -25,7 +25,6 @@ class Maze:
         check_next_node = lambda x, y: True if 0 <= x < self.cols and 0 <= y < self.rows and not self.grid[y][
             x] else False
         ways = [-1, 0], [0, -1], [1, 0], [0, 1]
-        # print([(self.weights[y + dy][x + dx], (x + dx, y + dy)) for dx, dy in ways if check_next_node(x + dx, y + dy)])
         return [(self.__generate_weights(), (x + dx, y + dy)) for dx, dy in ways if check_next_node(x + dx, y + dy)]
 
     def dfs(self, start=(0, 0), end=(0, 0)):

@@ -14,7 +14,6 @@ def main():
     args = parser.parse_args()
     MAZE = Maze()
     methods = ['bfs', 'dijkstra', 'all', 'mst']
-    print(type(args.methods))
 
     try:
         MAZE.upload(args.upload)
